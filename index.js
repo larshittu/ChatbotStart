@@ -18,11 +18,13 @@ app.post("/sms", (req, res) =>{
     if(!oOrders.hasOwnProperty(sFrom)){
         oOrders[sFrom] = new ShwarmaOrder();
     }
-    let sMessage = req.body.Body|| req.body.body;
+    let sMessage = req.body.Body || req.body.body;
     let aReply = oOrders[sFrom].handleInput(sMessage);
+
     if(oOrders[sFrom].isDone()){
         delete oOrders[sFrom];
     }
+    
     res.setHeader('content-type', 'text/xml');
     let sResponse = "<Response>";
     for(let n = 0; n < aReply.length; n++){
@@ -35,4 +37,4 @@ app.post("/sms", (req, res) =>{
 
 var port = process.env.PORT || parseInt(process.argv.pop()) || 3002;
 
-app.listen(port, () => console.log('Example app listening on port ' + port + '!'));
+app.listen(port, () => console.log('Application listening on port ' + port + '!'));
